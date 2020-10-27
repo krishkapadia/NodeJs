@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+    <script language="javascript">
+        /*
+There are four main Web Socket API events −
+    - Open
+    - Message
+    - Close
+    - Error
+
+Each of the events are handled by implementing the functions like onopen, onmessage, onclose and onerror functions respectively. It can also be implemented with the help of addEventListener method.
+
+Actions
+    -send() //to send  messages, which includes text files,   binary data or images.
+    - close() //terminates connection
+*/
+
+        var ws = new WebSocket('ws://localhost:8080');
+
+        ws.addEventListener("message", function (e) {
+            var msg = e.data;
+            document.getElementById('chatlog').innerHTML += '<br>Bot: ' + msg;
+        });
+
+        function sendMessage() {
+            var message = document.getElementById('message').value;
+            document.getElementById('chatlog').innerHTML += '<br> Me: ' + message;
+            ws.send(message);
+
+        }
+
+
+    </script>
+
+    <center>
+
+        <h2>Data from client</h2>
+        <input type="text" id="message" />
+        <input type="button" id="b1" onclick="sendMessage()" value="send" />
+        <hr />
+        <h2>Data from server</h2>
+        <div id="chatlog"></div>
+
+    </center>
+
+</body>
+
+</html>

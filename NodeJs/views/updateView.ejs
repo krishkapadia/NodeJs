@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EJS Engine Template </title>
+</head>
+
+<body>
+    <center>
+        <h1>CRUD OPERATION IN NODE JS USING MONGODB</h1>
+        <!-- <h2>Name : #{name} Surname : #{surname}</h2> -->
+
+        <form action="/update?id=<%= params[0]._id %>" method="post" id="contact">
+            <table>
+                <tr>
+                    <td>Enter Name : </td>
+                    <td><input type="text" value="<%= params[0].name %>" name="name" id="name"> </td>
+                </tr>
+                <tr>
+                    <td>Enter Surname : </td>
+                    <td><input type="text" value="<%= params[0].surname %>" name="surname" id="surname"> </td>
+                </tr>
+                <tr>
+                    <td>Enter Email : </td>
+                    <td><input type="text" value="<%= params[0].email %>" name="email" id="age"> </td>
+                </tr>
+                <tr>
+                    <td>Enter Age : </td>
+                    <td><input type="text" value="<%= params[0].age %>" name="age" id="age"> </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><input type="submit" value="Edit"></td>
+                </tr>
+            </table>
+        </form>
+
+        <table style="border: 6px solid black; margin-top: 10px; width: 100%; background-color:burlywood;">
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Surname</th>
+                <th>Email</th>
+                <th>Age</th>
+                <th>Delete</th>
+                <th>Update</th>
+            </tr>
+
+            <% data.forEach(function( eachPerson){ %>
+            <tr>
+                <td style="text-align: center;"> <%= eachPerson._id %> </td>
+                <td style="text-align: center;"> <%= eachPerson.name %> </td>
+                <td style="text-align: center;"> <%= eachPerson.surname %> </td>
+                <td style="text-align: center;"> <%= eachPerson.email %> </td>
+                <td style="text-align: center;"> <%= eachPerson.age %> </td>
+                <td style="text-align: center;">
+                    <form action="/delete?id=<%= eachPerson._id %>" method="post"><input type="submit" value="Delete">
+                    </form>
+                </td>
+                <td style="text-align: center;">
+                    <form action="/updateData?id=<%= eachPerson._id %>" method="post"><input type="submit"
+                            value="Update">
+                    </form>
+                </td>
+            </tr>
+            <% }) %>
+
+        </table>
+
+    </center>
+</body>
+
+</html>

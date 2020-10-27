@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EJS Engine Template </title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+
+<body>
+    <center>
+        <h1>CRUD OPERATION IN NODE JS USING MONGOOES</h1>
+        <!-- <h2>Name : #{name} Surname : #{surname}</h2> -->
+
+        <form action="/submit" method="post" id="contact">
+            <table>
+                <tr>
+                    <td>Enter Name : </td>
+                    <td><input type="text"  name="name" > </td>
+                </tr>
+                <tr>
+                    <td>Enter Surname : </td>
+                    <td><input type="text" name="surname" > </td>
+                </tr>
+                <tr>
+                    <td>Enter Email : </td>
+                    <td><input type="text" name="email" > </td>
+                </tr>
+                <tr>
+                    <td>Enter Age : </td>
+                    <td><input type="text" name="age" > </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><input type="submit" name="Add"></td>
+                </tr>
+            </table>
+        </form>
+
+        <h1>Searching...</h1>
+
+        <form action="/search" method="post" >
+            <table>
+                <tr>
+                    <td>Search By Name : </td>
+                    <td><input type="text" name="name" oninput="searchName(this.value)" id="name"> </td>
+                </tr>
+                <tr>
+                    <td>Search By Surname : </td>
+                    <td><input type="text" name="surname" id="surname"> </td>
+                </tr>
+                <tr>
+                    <td>Search By Email : </td>
+                    <td><input type="text" name="email" id="age"> </td>
+                </tr>
+                <tr>
+                    <td>Search By Age : </td>
+                    <td><input type="text" name="age" id="age"> </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><input type="submit" value="Search" name="search"></td>
+                </tr>
+            </table>
+        </form>
+
+        <table  style="border: 6px solid black; margin-top: 10px; width: 100%; background-color:burlywood;">
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Surname</th>
+                <th>Email</th>
+                <th>Age</th>
+                <th>Delete</th>
+                <th>Update</th>
+            </tr>
+
+            
+            <% data.forEach(function( eachPerson){ %>
+            <tr>
+                <td style="text-align: center;"> <%= eachPerson._id %> </td>
+                <td style="text-align: center;"> <%= eachPerson.name %> </td>
+                <td style="text-align: center;"> <%= eachPerson.surname %> </td>
+                <td style="text-align: center;"> <%= eachPerson.email %> </td>
+                <td style="text-align: center;"> <%= eachPerson.age %> </td>
+                <td style="text-align: center;">
+                    <form action="/delete?id=<%= eachPerson._id %>" method="post"><input type="submit" value="Delete">
+                    </form>
+                </td>
+                <td style="text-align: center;">
+                    <form action="/updateData?id=<%= eachPerson._id %>" method="post"><input type="submit" onmouseover="msg()"
+                            value="Update">
+                    </form>
+                </td>
+            </tr>
+            
+            <% }) %>
+            
+
+        </table>
+        
+        <table style="border: 6px solid black; margin-top: 10px; width: 100%; background-color:burlywood;">
+            <tbody id="div1">
+                <tr>
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>Surname</th>
+                    <th>Email</th>
+                    <th>Age</th>
+                </tr>
+            </tbody>
+            
+            <!-- <div id="div1"></div> -->
+        </table>
+        
+    </center>
+</body>
+<script>
+    
+    function searchName(val) {
+        
+        $.ajax({
+            url: "/search?val= " + val + " " , 
+            
+            success: function (result) {
+                
+                console.log("Length: "+result.length)
+                
+                for (let index = 0; index < result.length-1; index++) {
+                    
+                    var html = `                        
+                        <tr>
+                            <td style="text-align: center;"> ` + result[index]._id + ` </td>
+                            <td style="text-align: center;"> ` + result[index].name + ` </td>
+                            <td style="text-align: center;"> ` + result[index].surname + ` </td>
+                            <td style="text-align: center;"> ` + result[index].email + ` </td>
+                            <td style="text-align: center;"> ` + result[index].age + ` </td>
+                            
+                        </tr>                                              
+                    `
+                    //console.log(result);
+                    $("#div1").append(html);
+                                                
+                }
+                //var html = 
+                //$("#div1").html(html);
+            },
+
+        });
+        
+    }
+
+    function msg() {
+        console.log("Hello");
+        if(confirm("Are You Sure You Want To Delete ?"))
+        {
+
+        }
+        return false;
+    }
+
+</script>
+</html>
