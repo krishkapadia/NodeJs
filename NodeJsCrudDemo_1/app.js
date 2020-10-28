@@ -1,6 +1,27 @@
 const express = require('express');
 const app = express();
 var port = 80;
+// Require for mongodb operation
+const mongoose = require('mongoose');
+
+// Connection string for mongodb database
+mongoose.connect('mongodb://localhost/Practice1', { useNewUrlParser: true });
+
+// For checking connection is done or not
+const db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function () {
+    console.log("Connected");
+});
+
+// Creating Schema meaning creting table design
+const tblUserSchema = new mongoose.Schema({
+    username: String,
+    surname: String
+});
+
+// Compiling schema into model
+const tblUser = mongoose.model('tblUser', tblUserSchema);
 
 // For getting get the data from the post method we use urlencoded
 app.use(express.urlencoded());
@@ -11,15 +32,23 @@ app.set('view-engine', 'ejs');
 
 // get method url : localhost/
 app.get("/", (req, res) => {
-
     //res.send("Hello Wolrd"); // res.send is use for send the message to view
     res.render("index.ejs"); // its use for rendering html file
 });
 
 // post method when form was sumitted
 app.post("/", (req, res) => {
-
     // req.body.fieldname for get the value from the field
+    var obj = new tblUser({
+        username: req.body.username,
+        surname: req.body.surname
+    })
+    obj.save((err, result) => {
+        if (err)
+            console.log("Error");
+        else
+            console.log("Inserted");
+    })
     res.send(req.body.username + " " + req.body.surname);
 })
 
