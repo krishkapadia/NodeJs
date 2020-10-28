@@ -2,6 +2,9 @@ const express = require('express');
 const app = express();
 var port = 80;
 
+app.set('views', './views');
+app.set('view-engine','ejs')
+
 app.get("/",(req,res)=>{
     res.send("Hello Wolrd");
 });
