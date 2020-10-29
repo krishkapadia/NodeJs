@@ -66,7 +66,7 @@ app.get("/data",(req,res)=>{
 
 // Forchecking purpose on postman
 app.post("/check",(req,res)=>{
-    console.log("Id : ",req.body.myname)
+    console.log("Name : ",req.body.myname)
     res.end();
 })
 
