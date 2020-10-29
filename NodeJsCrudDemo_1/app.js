@@ -53,20 +53,20 @@ app.post("/", (req, res) => {
 });
 
 // Get the all records from mongodb in jsonform
-app.get("/data",(req,res)=>{
+app.get("/data", (req, res) => {
 
-    console.log("Id:",req.query.id);
-    global.mydata=null;
-    db.model('tblUser').find((err,data)=>{
+    console.log("Id:", req.query.id);
+    global.mydata = null;
+    db.model('tblUser').find((err, data) => {
         console.log(data)
         res.end(JSON.stringify(data));
     })
-    
+
 });
 
 // Forchecking purpose on postman
-app.post("/check",(req,res)=>{
-    console.log("Name : ",req.body.myname)
+app.post("/check", (req, res) => {
+    console.log("Name : ", req.body.myname)
     res.end();
 })
 
