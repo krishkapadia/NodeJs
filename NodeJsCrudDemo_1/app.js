@@ -50,6 +50,24 @@ app.post("/", (req, res) => {
             console.log("Inserted");
     })
     res.send(req.body.username + " " + req.body.surname);
+});
+
+// Get the all records from mongodb in jsonform
+app.get("/data",(req,res)=>{
+
+    console.log("Id:",req.query.id);
+    global.mydata=null;
+    db.model('tblUser').find((err,data)=>{
+        console.log(data)
+        res.end(JSON.stringify(data));
+    })
+    
+});
+
+// Forchecking purpose on postman
+app.post("/check",(req,res)=>{
+    console.log("Id : ",req.body.myname)
+    res.end();
 })
 
 // below code is run when url : localhost/about fired
