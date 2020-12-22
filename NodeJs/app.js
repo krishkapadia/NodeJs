@@ -34,9 +34,23 @@ const tblRegistartionSchema = new mongoose.Schema({
     age: String,
     email: String
 });
+const personSchema = Schema({
+    _id: Schema.Types.ObjectId,
+    name: String,
+    age: Number,
+    stories: [{ type: Schema.Types.ObjectId, ref: 'Story' }]
+});
+const storySchema = Schema({
+    author: { type: Schema.Types.ObjectId, ref: 'Person' },
+    title: String,
+    fans: [{ type: Schema.Types.ObjectId, ref: 'Person' }]
+});
+
 
 // Local Schema
 const tblRegistartion = mongoose.model("tblRegistartion", tblRegistartionSchema);
+const tblStory = mongoose.model('tblStory', storySchema);
+const tblPerson = mongoose.model('tblPerson', personSchema);
 
 
 // Endpoint
@@ -103,7 +117,6 @@ app.post("/update", (req, res) => {
 })
 
 app.use("/search",(req,res)=>{
-    
     var NAME = req.query.val;
     //console.log(NAME.length);
     tblRegistartion.find({ name : NAME.trim()},(err,data)=>{
@@ -119,6 +132,28 @@ app.use("/search",(req,res)=>{
     });
     
 })
+
+// Add Author url : localhost/addAuthor
+app.post("/addAuthor", (req, res) => {
+    const author = new tblPerson({
+        _id: new mongoose.Types.ObjectId(),
+        name: 'Tim Cook',
+        age: 50
+    });
+    author.save(function (err) {
+        if (err) return handleError(err);
+
+        const story1 = new tblStory({
+            title: 'CEO of Apple',
+            author: author._id    // assign the _id from the person
+        });
+
+        story1.save(function (err) {
+            if (err) return handleError(err);
+        });
+    });
+    res.end();
+});
 
 // Start Server
 app.listen(port, () => {

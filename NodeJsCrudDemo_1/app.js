@@ -19,9 +19,25 @@ const tblUserSchema = new mongoose.Schema({
     username: String,
     surname: String
 });
+const personSchema = Schema({
+    _id: Schema.Types.ObjectId,
+    name: String,
+    age: Number,
+    stories: [{ type: Schema.Types.ObjectId, ref: 'Story' }]
+});
+const storySchema = Schema({
+    author: { type: Schema.Types.ObjectId, ref: 'Person' },
+    title: String,
+    fans: [{ type: Schema.Types.ObjectId, ref: 'Person' }]
+});
+
+
+
 
 // Compiling schema into model
 const tblUser = mongoose.model('tblUser', tblUserSchema);
+const tblStory = mongoose.model('tblStory', storySchema);
+const tblPerson = mongoose.model('tblPerson', personSchema);
 
 // For getting get the data from the post method we use urlencoded
 app.use(express.urlencoded());
@@ -74,6 +90,28 @@ app.post("/check", (req, res) => {
 app.get("/about", (req, res) => {
     res.send("This Is About page")
 })
+
+// Add Author url : localhost/addAuthor
+app.post("/addAuthor",(req,res)=>{
+    const author = new tblPerson({
+        _id: new mongoose.Types.ObjectId(),
+        name: 'Tim Cook',
+        age: 50
+    });
+    author.save(function (err) {
+        if (err) return handleError(err);
+
+        const story1 = new tblStory({
+            title: 'CEO of Apple',
+            author: author._id    // assign the _id from the person
+        });
+
+        story1.save(function (err) {
+            if (err) return handleError(err);
+        });
+    });
+    res.end();
+}) ;
 
 // for starting a webserver on specific port number
 app.listen(port, () => {
